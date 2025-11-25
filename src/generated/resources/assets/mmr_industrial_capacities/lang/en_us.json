@@ -1,0 +1,15 @@
+{
+  "block.mmr_industrial_capacities.deep_fluid_hatch_128m": "Deep Fluid Output (128M B)",
+  "block.mmr_industrial_capacities.deep_fluid_hatch_16m": "Deep Fluid Output (16M B)",
+  "block.mmr_industrial_capacities.deep_fluid_hatch_1m": "Deep Fluid Output (1M B)",
+  "block.mmr_industrial_capacities.deep_fluid_hatch_256m": "Deep Fluid Output (256M B)",
+  "block.mmr_industrial_capacities.deep_fluid_hatch_4m": "Deep Fluid Output (4M B)",
+  "block.mmr_industrial_capacities.deep_fluid_hatch_64m": "Deep Fluid Output (64M B)",
+  "block.mmr_industrial_capacities.deep_storage_bus_128m": "Deep Item Output (128M)",
+  "block.mmr_industrial_capacities.deep_storage_bus_16m": "Deep Item Output (16M)",
+  "block.mmr_industrial_capacities.deep_storage_bus_1m": "Deep Item Output (1M)",
+  "block.mmr_industrial_capacities.deep_storage_bus_256m": "Deep Item Output (256M)",
+  "block.mmr_industrial_capacities.deep_storage_bus_4m": "Deep Item Output (4M)",
+  "block.mmr_industrial_capacities.deep_storage_bus_64m": "Deep Item Output (64M)",
+  "itemGroup.mmr_industrial_capacities": "MMR Industrial Capacities"
+}

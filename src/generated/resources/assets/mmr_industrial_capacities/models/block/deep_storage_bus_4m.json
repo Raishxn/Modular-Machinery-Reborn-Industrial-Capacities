@@ -1,0 +1,7 @@
+{
+  "parent": "modular_machinery_reborn:block/blockmodel_overlay",
+  "textures": {
+    "base": "modular_machinery_reborn:block/casing_plain",
+    "overlay": "mmr_industrial_capacities:block/overlay_deep_storage_bus_4m"
+  }
+}
