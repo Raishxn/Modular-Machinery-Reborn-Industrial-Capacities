@@ -10,62 +10,46 @@ public class DeepStorageTank extends HybridTank {
     private final long deepCapacity;
 
     public DeepStorageTank(long capacityMB) {
-        super(Integer.MAX_VALUE); // Capacidade visual "falsa" segura para evitar crash
+        super((int) Math.min(capacityMB, Integer.MAX_VALUE));
         this.deepCapacity = capacityMB;
     }
-
-    /**
-     * Define a quantidade real de fluido (usado ao carregar NBT).
-     * @param amount Quantidade em mB (pode ser maior que Integer.MAX_VALUE)
-     */
     public void setDeepAmount(long amount) {
         this.deepAmount = amount;
-        updateParentFluid(); // Atualiza o visual imediatamente
+        updateParentFluid();
     }
-
-    // Retorna a quantidade real para seus displays/waila/jade/salvar NBT
     public long getDeepFluidAmount() {
         return deepAmount;
     }
-
     @Override
     public int getFluidAmount() {
-        // Retorna o visual (clampado em MAX_INT para interfaces normais não bugarem)
         return (int) Math.min(deepAmount, Integer.MAX_VALUE);
     }
-
     @Override
     public int getCapacity() {
-        // Diz ao jogo que cabe muito, mas dentro do limite do Java Integer
-        return Integer.MAX_VALUE;
+        return (int) Math.min(deepCapacity, Integer.MAX_VALUE);
     }
-
     @Override
     public boolean isFluidValid(FluidStack stack) {
         return true;
     }
-
     @Override
     public int fill(FluidStack resource, IFluidHandler.FluidAction action) {
         if (resource.isEmpty()) return 0;
 
-        // Se o tanque está vazio logicamente, definimos o tipo do fluido
         if (deepAmount == 0) {
             if (action.execute()) {
-                this.fluid = resource.copy(); // Define o tipo do fluido na classe pai
-                this.fluid.setAmount(1); // Quantidade dummy para não ficar empty/null
+                this.fluid = resource.copy();
+                this.fluid.setAmount(1);
             }
         } else if (!resource.isFluidEqual(this.fluid)) {
-            return 0; // Fluido diferente, rejeita
+            return 0;
         }
-
         long space = deepCapacity - deepAmount;
-        // O quanto podemos encher, limitado pelo que o chamador enviou (int) e espaço restante
         int toFill = (int) Math.min(resource.getAmount(), Math.min(space, Integer.MAX_VALUE));
 
         if (action.execute()) {
             deepAmount += toFill;
-            updateParentFluid(); // Sincroniza visual
+            updateParentFluid();
             onContentsChanged();
         }
 
@@ -76,7 +60,6 @@ public class DeepStorageTank extends HybridTank {
     public FluidStack drain(int maxDrain, IFluidHandler.FluidAction action) {
         if (deepAmount <= 0) return FluidStack.EMPTY;
 
-        // Drena o minimo entre: o que pediram, o que tem, e o limite do Integer
         int toDrain = (int) Math.min(maxDrain, Math.min(deepAmount, Integer.MAX_VALUE));
 
         FluidStack drained = this.fluid.copy();
@@ -85,7 +68,7 @@ public class DeepStorageTank extends HybridTank {
         if (action.execute()) {
             deepAmount -= toDrain;
             if (deepAmount <= 0) {
-                setFluid(FluidStack.EMPTY); // Esvazia totalmente a referência visual
+                setFluid(FluidStack.EMPTY);
                 deepAmount = 0;
             } else {
                 updateParentFluid();
@@ -96,8 +79,6 @@ public class DeepStorageTank extends HybridTank {
         return drained;
     }
 
-    // Sincroniza a variável 'fluid' da classe pai (HybridTank) com o deepAmount
-    // Isso garante que o renderizador do MMR veja que tem fluido, mas sem estourar o limite de int
     private void updateParentFluid() {
         if (!this.fluid.isEmpty()) {
             this.fluid.setAmount((int) Math.min(deepAmount, Integer.MAX_VALUE));
